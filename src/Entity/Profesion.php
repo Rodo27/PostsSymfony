@@ -40,7 +40,7 @@ class Profesion
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="profesion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="profesion")
      */
     private $user;
 

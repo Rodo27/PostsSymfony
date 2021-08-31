@@ -113,7 +113,7 @@ class Post
     private $comentario;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="post")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="post")
      */
     private $user;
 
