@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -78,5 +79,24 @@ class PostController extends AbstractController
         $posts = $em->getRepository(Post::class)->findBy(['user' => $user]);
         return $this->render('post/mis_posts.html.twig', ['posts' => $posts]);
 
+    }
+
+
+     /**
+     * @Route("/likes", options={"expose"=true}, name="likes")
+     */
+    public function likes(Request $request){
+        if($request->isXmlHttpRequest()){
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $id = $request->request->get('id');
+            $post = $em->getRepository(Post::class)->find($id);
+            $likes = $post->getLikes();
+            $likes .= $user->getId().',';
+            $post->setLikes($likes);
+            $em->flush();
+
+            return new JsonResponse(['likes' => $likes]);
+        }
     }
 }
